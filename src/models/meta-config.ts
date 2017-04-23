@@ -4,6 +4,7 @@ export interface MetaConfig {
    * Default value: false
    */
   useTitleSuffix?: boolean;
+  useTitlePrefix?: boolean;
   /**
    * A dictionary of default meta tags and their values
    */
@@ -17,6 +18,7 @@ export interface MetaConfig {
      * and a route does not have its own titleSuffix.
      */
     titleSuffix?: string;
+    titlePrefix?: string;
     [key: string]: string;
   };
 }

@@ -9,12 +9,12 @@ export const META_CONFIG = new OpaqueToken('meta config');
   imports: [RouterModule]
 })
 export class MetaModule {
-  static forRoot(metaConfig: MetaConfig = { useTitleSuffix: false, defaults: {} }): ModuleWithProviders {
+  static forRoot(metaConfig: MetaConfig = { useTitleSuffix: false, useTitlePrefix: false, defaults: {} }): ModuleWithProviders {
     return {
       ngModule: MetaModule,
-      providers: [ 
+      providers: [
             { provide: META_CONFIG, useValue: metaConfig},
-            MetaService 
+            MetaService
        ]
     };
   }

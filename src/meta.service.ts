@@ -48,29 +48,32 @@ export class MetaService {
       return false;
     }
 
-    this.setTitle(meta.title, meta.titleSuffix);
+    this.setTitle(meta.title, meta.titleSuffix, meta.titlePrefix);
 
     Object.keys(meta).forEach(key => {
-      if (key === 'title' || key === 'titleSuffix') {
+      if (key === 'title' || key === 'titleSuffix' || key === 'titlePrefix') {
         return;
       }
       this.setTag(key, meta[key]);
     });
 
     Object.keys(this.metaConfig.defaults).forEach(key => {
-      if (key in meta || key === 'title' || key === 'titleSuffix') {
+      if (key in meta || key === 'title' || key === 'titleSuffix'|| key === 'titlePrefix') {
         return;
       }
       this.setTag(key, this.metaConfig.defaults[key]);
     });
   }
 
-  setTitle(title?: string, titleSuffix?: string): MetaService {
+  setTitle(title?: string, titleSuffix?: string, titlePrefix?: string): MetaService {
     const titleElement = this._getOrCreateMetaTag('title');
     const ogTitleElement = this._getOrCreateMetaTag('og:title');
     let titleStr = isDefined(title) ? title : (this.metaConfig.defaults['title'] || '');
     if (this.metaConfig.useTitleSuffix) {
       titleStr += isDefined(titleSuffix) ? titleSuffix : (this.metaConfig.defaults['titleSuffix'] || '');
+    }
+    if (this.metaConfig.useTitlePrefix) {
+      titleStr = isDefined(titlePrefix) ? titlePrefix : (this.metaConfig.defaults['titlePrefix'] || '') + titleStr;
     }
 
     titleElement.setAttribute('content', titleStr);
@@ -80,8 +83,8 @@ export class MetaService {
   }
 
   setTag(tag: string, value: string): MetaService {
-    if (tag === 'title' || tag === 'titleSuffix') {
-      throw new Error(`Attempt to set ${tag} through 'setTag': 'title' and 'titleSuffix' are reserved tag names.
+    if (tag === 'title' || tag === 'titleSuffix' || tag === 'titlePrefix') {
+      throw new Error(`Attempt to set ${tag} through 'setTag': 'title', 'titleSuffix' and 'titlePrefix' are reserved tag names.
       Please use 'MetaService.setTitle' instead`);
     }
     const tagElement = this._getOrCreateMetaTag(tag);
